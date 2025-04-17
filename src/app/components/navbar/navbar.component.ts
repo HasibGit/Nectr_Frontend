@@ -14,7 +14,7 @@ import { take } from 'rxjs';
 export class NavbarComponent {
   private authService = inject(AuthService);
   loginForm: ILogin = { username: '', password: '' };
-  isLogged = false;
+  isLoggedIn = false;
 
   login(): void {
     this.authService
@@ -23,11 +23,15 @@ export class NavbarComponent {
       .subscribe({
         next: (response: ILoginResponse) => {
           console.log(response);
-          this.isLogged = true;
+          this.isLoggedIn = true;
         },
         error: (err) => {
           console.log(err);
         },
       });
+  }
+
+  logout(): void {
+    this.isLoggedIn = false;
   }
 }
