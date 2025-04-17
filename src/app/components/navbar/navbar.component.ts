@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ILogin } from '../../interfaces/login.interface';
+import { ILogin, ILoginResponse } from '../../interfaces/login.interface';
+import { AuthService } from '../../services/auth.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -10,9 +12,22 @@ import { ILogin } from '../../interfaces/login.interface';
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
+  private authService = inject(AuthService);
   loginForm: ILogin = { username: '', password: '' };
+  isLogged = false;
 
   login(): void {
-    console.log(this.loginForm);
+    this.authService
+      .login(this.loginForm)
+      .pipe(take(1))
+      .subscribe({
+        next: (response: ILoginResponse) => {
+          console.log(response);
+          this.isLogged = true;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 }
