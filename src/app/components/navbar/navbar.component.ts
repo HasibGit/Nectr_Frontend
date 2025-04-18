@@ -13,18 +13,16 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
-  private authService = inject(AuthService);
+  authService = inject(AuthService);
   loginForm: ILogin = { username: '', password: '' };
-  isLoggedIn = false;
 
   login(): void {
     this.authService
       .login(this.loginForm)
       .pipe(take(1))
       .subscribe({
-        next: (response: ILoginResponse) => {
-          console.log(response);
-          this.isLoggedIn = true;
+        next: () => {
+          console.log('Login successful');
         },
         error: (err) => {
           console.log(err);
@@ -33,6 +31,6 @@ export class NavbarComponent {
   }
 
   logout(): void {
-    this.isLoggedIn = false;
+    this.authService.logout();
   }
 }
