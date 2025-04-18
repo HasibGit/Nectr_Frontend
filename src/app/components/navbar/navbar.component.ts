@@ -3,11 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { ILogin, ILoginResponse } from '../../interfaces/login.interface';
 import { AuthService } from '../../services/auth.service';
 import { take } from 'rxjs';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, BsDropdownModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
