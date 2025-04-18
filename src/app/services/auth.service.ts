@@ -3,6 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { ILogin, ILoginResponse } from '../interfaces/login.interface';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { IRegister, IRegisterResponse } from '../interfaces/register.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,25 @@ export class AuthService {
       .post<ILoginResponse>(
         `${environment.baseUrl}/api/account/login`,
         loginData
+      )
+      .pipe(
+        tap((user) => {
+          if (user) {
+            localStorage.setItem(
+              environment.userLocalStorageKey,
+              JSON.stringify(user)
+            );
+            this.loggedInUser.set(user);
+          }
+        })
+      );
+  }
+
+  register(registerData: IRegister): Observable<IRegisterResponse> {
+    return this.http
+      .post<IRegisterResponse>(
+        `${environment.baseUrl}/api/account/register`,
+        registerData
       )
       .pipe(
         tap((user) => {

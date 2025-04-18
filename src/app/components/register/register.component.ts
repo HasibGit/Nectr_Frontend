@@ -1,6 +1,10 @@
-import { Component, output } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IRegister } from '../../interfaces/register.interface';
+import {
+  IRegister,
+  IRegisterResponse,
+} from '../../interfaces/register.interface';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -13,8 +17,16 @@ export class RegisterComponent {
   cancelRegistration = output<void>();
   registerForm: IRegister = { username: '', password: '' };
 
+  private authService = inject(AuthService);
+
   register(): void {
-    console.log(this.registerForm);
+    this.authService.register(this.registerForm).subscribe({
+      next: (response: IRegisterResponse) => {
+        console.log(response);
+        this.cancel();
+      },
+      error: (err) => console.log(err),
+    });
   }
 
   cancel(): void {
