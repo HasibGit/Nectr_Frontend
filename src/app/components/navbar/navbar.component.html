@@ -1,18 +1,18 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container">
-      <a class="navbar-brand" href="#">NectR</a>
-      <div class="collapse navbar-collapse">
+      <a class="navbar-brand" routerLink="/">NectR</a>
+      <div class="navbar-collapse">
 
         @if(authService.loggedInUser()) {
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Matches</a>
+                  <a routerLink="/members" class="nav-link" routerLinkActive="active" href="#">Matches</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Lists</a>
+                  <a routerLink="/lists" class="nav-link" routerLinkActive="active" href="#">Lists</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Messages</a>
+                  <a routerLink="/messages" class="nav-link" routerLinkActive="active" href="#">Messages</a>
                 </li>
               </ul>
 

@@ -4,11 +4,12 @@ import { ILogin, ILoginResponse } from '../../interfaces/login.interface';
 import { AuthService } from '../../services/auth.service';
 import { take } from 'rxjs';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [FormsModule, BsDropdownModule],
+  imports: [FormsModule, BsDropdownModule, RouterLink, RouterLinkActive],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
