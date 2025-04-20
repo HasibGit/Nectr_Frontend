@@ -1,39 +1,75 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container">
-      <a class="navbar-brand" routerLink="/">NectR</a>
-      <div class="navbar-collapse">
-
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">NectR</a>
+    <div class="navbar-collapse">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         @if(authService.loggedInUser()) {
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                  <a routerLink="/members" class="nav-link" routerLinkActive="active" href="#">Matches</a>
-                </li>
-                <li class="nav-item">
-                  <a routerLink="/lists" class="nav-link" routerLinkActive="active" href="#">Lists</a>
-                </li>
-                <li class="nav-item">
-                  <a routerLink="/messages" class="nav-link" routerLinkActive="active" href="#">Messages</a>
-                </li>
-              </ul>
-
-              <div dropdown class="dropdown">
-                <a dropdownToggle class="dropdown-toggle text-dark text-decoration-none">Welcome User</a>
-                <div *dropdownMenu class="dropdown-menu">
-                    <a class="dropdown-item">Edit Profile</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" (click)="logout()">Logout</a>
-                </div>
-              </div>
+        <li class="nav-item">
+          <a
+            routerLink="/members"
+            class="nav-link"
+            routerLinkActive="active"
+            href="#"
+            >Matches</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            routerLink="/lists"
+            class="nav-link"
+            routerLinkActive="active"
+            href="#"
+            >Lists</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            routerLink="/messages"
+            class="nav-link"
+            routerLinkActive="active"
+            href="#"
+            >Messages</a
+          >
+        </li>
         }
+      </ul>
 
-        @if(!authService.loggedInUser()){
-            <form #loginNgForm="ngForm" (ngSubmit)="login()" class="d-flex ms-auto" autocomplete="off">
-                <input name="username" [(ngModel)]="loginForm.username" class="form-control me-2" type="text" placeholder="User Name">
-                <input name="password" [(ngModel)]="loginForm.password" class="form-control me-4" type="password" placeholder="Password">
-                <button type="submit" class="btn btn-success">Login</button>
-              </form>
-        }
-        
+      @if(authService.loggedInUser()) {
+
+      <div dropdown class="dropdown">
+        <a dropdownToggle class="dropdown-toggle text-dark text-decoration-none"
+          >Welcome User</a
+        >
+        <div *dropdownMenu class="dropdown-menu">
+          <a class="dropdown-item">Edit Profile</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" (click)="logout()">Logout</a>
+        </div>
       </div>
+      } @if(!authService.loggedInUser()){
+      <form
+        #loginNgForm="ngForm"
+        (ngSubmit)="login()"
+        class="d-flex ms-auto"
+        autocomplete="off"
+      >
+        <input
+          name="username"
+          [(ngModel)]="loginForm.username"
+          class="form-control me-2"
+          type="text"
+          placeholder="User Name"
+        />
+        <input
+          name="password"
+          [(ngModel)]="loginForm.password"
+          class="form-control me-4"
+          type="password"
+          placeholder="Password"
+        />
+        <button type="submit" class="btn btn-success">Login</button>
+      </form>
+      }
     </div>
-  </nav>
+  </div>
+</nav>
