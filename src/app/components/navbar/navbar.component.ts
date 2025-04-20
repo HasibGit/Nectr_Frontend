@@ -4,7 +4,7 @@ import { ILogin, ILoginResponse } from '../../interfaces/login.interface';
 import { AuthService } from '../../services/auth.service';
 import { take } from 'rxjs';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -17,6 +17,8 @@ export class NavbarComponent {
   authService = inject(AuthService);
   loginForm: ILogin = { username: '', password: '' };
 
+  private router = inject(Router);
+
   login(): void {
     this.authService
       .login(this.loginForm)
@@ -24,6 +26,7 @@ export class NavbarComponent {
       .subscribe({
         next: () => {
           console.log('Login successful');
+          this.router.navigateByUrl('/members');
         },
         error: (err) => {
           console.log(err);
@@ -33,5 +36,6 @@ export class NavbarComponent {
 
   logout(): void {
     this.authService.logout();
+    this.router.navigateByUrl('/');
   }
 }
