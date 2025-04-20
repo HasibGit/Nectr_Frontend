@@ -4,6 +4,6 @@ export interface IRegister {
 }
 
 export interface IRegisterResponse {
-  username: string;
+  userName: string;
   token: string;
 }
