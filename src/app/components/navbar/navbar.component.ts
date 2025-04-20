@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { take } from 'rxjs';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-navbar',
@@ -18,6 +19,7 @@ export class NavbarComponent {
   loginForm: ILogin = { username: '', password: '' };
 
   private router = inject(Router);
+  private toastr = inject(ToastrService);
 
   login(): void {
     this.authService
@@ -27,9 +29,11 @@ export class NavbarComponent {
         next: () => {
           console.log('Login successful');
           this.router.navigateByUrl('/members');
+          this.toastr.success('Welcome back!');
         },
         error: (err) => {
           console.log(err);
+          this.toastr.error(err.error);
         },
       });
   }

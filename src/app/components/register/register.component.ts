@@ -5,6 +5,7 @@ import {
   IRegisterResponse,
 } from '../../interfaces/register.interface';
 import { AuthService } from '../../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -18,6 +19,7 @@ export class RegisterComponent {
   registerForm: IRegister = { username: '', password: '' };
 
   private authService = inject(AuthService);
+  private toastr = inject(ToastrService);
 
   register(): void {
     this.authService.register(this.registerForm).subscribe({
@@ -25,7 +27,7 @@ export class RegisterComponent {
         console.log(response);
         this.cancel();
       },
-      error: (err) => console.log(err),
+      error: (err) => this.toastr.error(err.message),
     });
   }
 
