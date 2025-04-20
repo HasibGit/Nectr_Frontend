@@ -4,10 +4,15 @@ import { MembersListComponent } from './components/members/members-list/members-
 import { MembersDetailComponent } from './components/members/members-detail/members-detail.component';
 import { ListsComponent } from './components/lists/lists.component';
 import { MessagesComponent } from './components/messages/messages.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'members', component: MembersListComponent },
+  {
+    path: 'members',
+    component: MembersListComponent,
+    canActivate: [authGuard],
+  },
   { path: 'members/:id', component: MembersDetailComponent },
   { path: 'lists', component: ListsComponent },
   { path: 'messages', component: MessagesComponent },
