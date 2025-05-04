@@ -31,10 +31,6 @@ export class NavbarComponent {
           this.router.navigateByUrl('/members');
           this.toastr.success('Welcome back!');
         },
-        error: (err) => {
-          console.log(err);
-          this.toastr.error(err.error);
-        },
       });
   }
 
