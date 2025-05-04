@@ -5,6 +5,8 @@ import { MembersDetailComponent } from './components/members/members-detail/memb
 import { ListsComponent } from './components/lists/lists.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { authGuard } from './guards/auth.guard';
+import { NotFoundComponent } from './components/error/not-found/not-found.component';
+import { ServerErrorComponent } from './components/error/server-error/server-error.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Public route
@@ -18,6 +20,8 @@ export const routes: Routes = [
       { path: 'members/:id', component: MembersDetailComponent },
       { path: 'lists', component: ListsComponent },
       { path: 'messages', component: MessagesComponent },
+      { path: 'not-found', component: NotFoundComponent },
+      { path: 'server-error', component: ServerErrorComponent },
     ],
   },
 
