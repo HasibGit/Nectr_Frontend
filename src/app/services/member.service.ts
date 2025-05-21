@@ -16,6 +16,6 @@ export class MemberService {
   }
 
   getMember(username: string): Observable<IMember> {
-    return this.http.get<IMember>(this.baseUrl + '/api/user/' + username);
+    return this.http.get<IMember>(this.baseUrl + '/api/users/' + username);
   }
 }

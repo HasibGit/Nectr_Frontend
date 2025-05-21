@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { IMember } from '../../../interfaces/member.interface';
 import { MemberService } from '../../../services/member.service';
 import { take } from 'rxjs';
-import { MemberCardComponent } from "../member-card/member-card.component";
+import { MemberCardComponent } from '../member-card/member-card.component';
 
 @Component({
   selector: 'app-members-list',
@@ -17,10 +17,10 @@ export class MembersListComponent implements OnInit {
   private memberService = inject(MemberService);
 
   ngOnInit(): void {
-    this.getMembers();
+    this.loadMembers();
   }
 
-  getMembers(): void {
+  loadMembers(): void {
     this.memberService
       .getMembers()
       .pipe(take(1))
