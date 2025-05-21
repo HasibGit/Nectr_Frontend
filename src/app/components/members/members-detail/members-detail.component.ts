@@ -3,11 +3,12 @@ import { MemberService } from '../../../services/member.service';
 import { ActivatedRoute } from '@angular/router';
 import { IMember } from '../../../interfaces/member.interface';
 import { take } from 'rxjs';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 @Component({
   selector: 'app-members-detail',
   standalone: true,
-  imports: [],
+  imports: [TabsModule],
   templateUrl: './members-detail.component.html',
   styleUrl: './members-detail.component.scss',
 })
