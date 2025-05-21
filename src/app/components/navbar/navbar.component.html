@@ -37,7 +37,9 @@
       @if(authService.loggedInUser()) {
 
       <div dropdown class="dropdown">
-        <a dropdownToggle class="dropdown-toggle text-dark text-decoration-none"
+        <a
+          dropdownToggle
+          class="dropdown-toggle text-light text-decoration-none"
           >Welcome {{ authService.loggedInUser()?.userName }}</a
         >
         <div *dropdownMenu class="dropdown-menu">
