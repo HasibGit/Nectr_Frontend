@@ -2,11 +2,12 @@ import { Component, inject, OnInit } from '@angular/core';
 import { IMember } from '../../../interfaces/member.interface';
 import { MemberService } from '../../../services/member.service';
 import { take } from 'rxjs';
+import { MemberCardComponent } from "../member-card/member-card.component";
 
 @Component({
   selector: 'app-members-list',
   standalone: true,
-  imports: [],
+  imports: [MemberCardComponent],
   templateUrl: './members-list.component.html',
   styleUrl: './members-list.component.scss',
 })
