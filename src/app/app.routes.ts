@@ -7,6 +7,7 @@ import { MessagesComponent } from './components/messages/messages.component';
 import { authGuard } from './guards/auth.guard';
 import { NotFoundComponent } from './components/error/not-found/not-found.component';
 import { ServerErrorComponent } from './components/error/server-error/server-error.component';
+import { MemberEditComponent } from './components/members/member-edit/member-edit.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Public route
@@ -18,6 +19,7 @@ export const routes: Routes = [
     children: [
       { path: 'members', component: MembersListComponent },
       { path: 'members/:username', component: MembersDetailComponent },
+      { path: 'member/edit', component: MemberEditComponent },
       { path: 'lists', component: ListsComponent },
       { path: 'messages', component: MessagesComponent },
       { path: 'not-found', component: NotFoundComponent },

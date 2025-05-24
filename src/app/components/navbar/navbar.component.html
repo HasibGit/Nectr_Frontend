@@ -1,4 +1,4 @@
-<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+<nav class="navbar fixed-top navbar-dark bg-dark navbar-expand-lg">
   <div class="container">
     <a class="navbar-brand" routerLink="/">NectR</a>
     <div class="navbar-collapse">
@@ -43,7 +43,7 @@
           >Welcome {{ authService.loggedInUser()?.userName }}</a
         >
         <div *dropdownMenu class="dropdown-menu">
-          <a class="dropdown-item">Edit Profile</a>
+          <a routerLink="/member/edit" class="dropdown-item">Edit Profile</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" (click)="logout()">Logout</a>
         </div>
