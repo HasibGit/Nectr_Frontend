@@ -1,23 +1,28 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { IMember } from '../../../interfaces/member.interface';
 import { AuthService } from '../../../services/auth.service';
 import { MemberService } from '../../../services/member.service';
 import { take } from 'rxjs';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { GalleryModule } from 'ng-gallery';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-member-edit',
   standalone: true,
-  imports: [TabsModule, GalleryModule, FormsModule],
+  imports: [CommonModule, TabsModule, GalleryModule, FormsModule],
   templateUrl: './member-edit.component.html',
   styleUrl: './member-edit.component.scss',
 })
 export class MemberEditComponent implements OnInit {
+  @ViewChild('editForm') editForm: NgForm;
+
   member: IMember;
   private authService = inject(AuthService);
   private memberService = inject(MemberService);
+  private toastr = inject(ToastrService);
 
   ngOnInit(): void {
     this.loadMember();
@@ -36,5 +41,10 @@ export class MemberEditComponent implements OnInit {
       .subscribe({
         next: (member) => (this.member = member),
       });
+  }
+
+  onSaveChanges(): void {
+    this.toastr.success('Profile updated successfully!');
+    this.editForm.reset(this.member);
   }
 }
