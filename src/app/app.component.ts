@@ -6,15 +6,24 @@ import { AuthService } from './services/auth.service';
 import { environment } from '../environments/environment';
 import { HomeComponent } from './components/home/home.component';
 import { RouterOutlet } from '@angular/router';
+import { SpinnerService } from './services/spinner.service';
+import { NgxSpinnerComponent } from 'ngx-spinner';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, NavbarComponent, HomeComponent],
+  imports: [
+    RouterOutlet,
+    CommonModule,
+    NavbarComponent,
+    HomeComponent,
+    NgxSpinnerComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
+  spinnerService = inject(SpinnerService);
   private authService = inject(AuthService);
 
   ngOnInit(): void {
