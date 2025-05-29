@@ -2,7 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { IMember } from '../interfaces/member.interface';
-import { Observable, take } from 'rxjs';
+import { Observable, of, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +23,14 @@ export class MemberService {
   }
 
   getMember(username: string): Observable<IMember> {
+    const idx = this.members().findIndex(
+      (member) => member.userName === username
+    );
+
+    if (idx >= 0) {
+      return of(this.members()[idx]);
+    }
+
     return this.http.get<IMember>(this.baseUrl + '/api/users/' + username);
   }
 
