@@ -14,11 +14,18 @@ import { GalleryModule } from 'ng-gallery';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
+import { PhotoEditorComponent } from '../photo-editor/photo-editor.component';
 
 @Component({
   selector: 'app-member-edit',
   standalone: true,
-  imports: [CommonModule, TabsModule, GalleryModule, FormsModule],
+  imports: [
+    CommonModule,
+    TabsModule,
+    GalleryModule,
+    FormsModule,
+    PhotoEditorComponent,
+  ],
   templateUrl: './member-edit.component.html',
   styleUrl: './member-edit.component.scss',
 })
