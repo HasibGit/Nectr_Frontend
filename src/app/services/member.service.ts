@@ -56,4 +56,25 @@ export class MemberService {
         })
       );
   }
+
+  deletePhoto(photo: IPhoto) {
+    return this.http
+      .delete(`${this.baseUrl}/api/users/delete-photo/${photo.id}`, {})
+      .pipe(
+        tap(() => {
+          this.members.update((members) =>
+            members.map((member) => {
+              const filteredPhotos = member.photos.filter((p) => p !== photo);
+              const isPhotoUrlRemoved = member.photoUrl === photo.url;
+
+              return {
+                ...member,
+                photos: filteredPhotos,
+                photoUrl: isPhotoUrlRemoved ? '' : member.photoUrl,
+              };
+            })
+          );
+        })
+      );
+  }
 }

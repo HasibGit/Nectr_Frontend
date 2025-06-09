@@ -84,4 +84,31 @@ export class PhotoEditorComponent implements OnInit {
         },
       });
   }
+
+  onDelete(photo: IPhoto) {
+    this.memberService
+      .deletePhoto(photo)
+      .pipe(take(1))
+      .subscribe({
+        next: (_) => {
+          const user = this.authService.loggedInUser();
+
+          if (user && user.photoUrl == photo.url) {
+            user.photoUrl = '';
+            this.authService.setCurrentUser(user);
+          }
+
+          const updatedMember = {
+            ...this.member(),
+            photos: this.member().photos.filter((p) => p !== photo),
+          };
+
+          if (updatedMember.photoUrl == photo.url) {
+            updatedMember.photoUrl = '';
+          }
+
+          this.memberChanged.emit(updatedMember);
+        },
+      });
+  }
 }
