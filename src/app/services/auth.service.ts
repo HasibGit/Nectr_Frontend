@@ -21,11 +21,7 @@ export class AuthService {
       .pipe(
         tap((user) => {
           if (user) {
-            localStorage.setItem(
-              environment.userLocalStorageKey,
-              JSON.stringify(user)
-            );
-            this.loggedInUser.set(user);
+            this.setCurrentUser(user);
           }
         })
       );
@@ -40,14 +36,15 @@ export class AuthService {
       .pipe(
         tap((user) => {
           if (user) {
-            localStorage.setItem(
-              environment.userLocalStorageKey,
-              JSON.stringify(user)
-            );
-            this.loggedInUser.set(user);
+            this.setCurrentUser(user);
           }
         })
       );
+  }
+
+  setCurrentUser(user: ILoginResponse) {
+    localStorage.setItem(environment.userLocalStorageKey, JSON.stringify(user));
+    this.loggedInUser.set(user);
   }
 
   logout(): void {

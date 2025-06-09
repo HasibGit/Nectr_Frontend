@@ -2,3 +2,11 @@
 .dropdown-item {
   cursor: pointer;
 }
+
+.profile-pic {
+  max-height: 40px;
+  border: 2px solid white;
+  display: inline;
+  margin-right: 16px;
+  border-radius: 50%;
+}

@@ -37,6 +37,13 @@
       @if(authService.loggedInUser()) {
 
       <div dropdown class="dropdown">
+        <img
+          class="profile-pic"
+          src="{{
+            authService.loggedInUser()?.photoUrl || './assets/user.png'
+          }}"
+          alt="user profile pic"
+        />
         <a
           dropdownToggle
           class="dropdown-toggle text-light text-decoration-none"

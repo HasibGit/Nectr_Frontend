@@ -6,4 +6,5 @@ export interface ILogin {
 export interface ILoginResponse {
   userName: string;
   token: string;
+  photoUrl?: string;
 }

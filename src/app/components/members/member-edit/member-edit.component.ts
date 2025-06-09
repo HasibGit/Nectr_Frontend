@@ -72,4 +72,8 @@ export class MemberEditComponent implements OnInit {
         },
       });
   }
+
+  onMemberChange(event: IMember) {
+    this.member = event;
+  }
 }
