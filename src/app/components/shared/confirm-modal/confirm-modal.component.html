@@ -1,0 +1,16 @@
+<div class="modal-header">
+  <h5 class="modal-title">{{ title || "Confirm" }}</h5>
+  <button
+    type="button"
+    class="btn-close"
+    (click)="decline()"
+    aria-label="Close"
+  ></button>
+</div>
+<div class="modal-body">
+  <p>{{ message || "Are you sure?" }}</p>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-secondary btn-sm" (click)="decline()">Cancel</button>
+  <button class="btn btn-danger btn-sm" (click)="confirm()">Delete</button>
+</div>

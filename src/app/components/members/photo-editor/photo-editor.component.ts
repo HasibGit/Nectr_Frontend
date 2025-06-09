@@ -7,6 +7,8 @@ import { AuthService } from '../../../services/auth.service';
 import { IPhoto } from '../../../interfaces/photo.interface';
 import { MemberService } from '../../../services/member.service';
 import { take } from 'rxjs';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ConfirmModalComponent } from '../../shared/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-photo-editor',
@@ -23,6 +25,8 @@ export class PhotoEditorComponent implements OnInit {
   uploader?: FileUploader;
   hasBaseDropZoneOver = false;
   baseUrl = environment.baseUrl;
+
+  constructor(private modalService: BsModalService) {}
 
   ngOnInit(): void {
     this.initializeUploader();
@@ -86,6 +90,17 @@ export class PhotoEditorComponent implements OnInit {
   }
 
   onDelete(photo: IPhoto) {
+    const modalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
+      class: 'modal-sm modal-dialog-centered',
+      initialState: {
+        title: 'Delete Photo',
+        message: 'Are you sure you want to delete this photo?',
+        onConfirm: () => this.confirmDelete(photo),
+      },
+    });
+  }
+
+  private confirmDelete(photo: IPhoto) {
     this.memberService
       .deletePhoto(photo)
       .pipe(take(1))
