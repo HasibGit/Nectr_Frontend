@@ -4,6 +4,9 @@ import { DecimalPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { FileUploader, FileUploadModule } from 'ng2-file-upload';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../services/auth.service';
+import { IPhoto } from '../../../interfaces/photo.interface';
+import { MemberService } from '../../../services/member.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-photo-editor',
@@ -14,6 +17,7 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class PhotoEditorComponent implements OnInit {
   authService = inject(AuthService);
+  memberService = inject(MemberService);
   member = input.required<IMember>();
   memberChanged = output<IMember>();
   uploader?: FileUploader;
@@ -50,5 +54,34 @@ export class PhotoEditorComponent implements OnInit {
 
       this.memberChanged.emit(updatedMember);
     };
+  }
+
+  setAsMain(photo: IPhoto) {
+    this.memberService
+      .setAsMainProfilePic(photo)
+      .pipe(take(1))
+      .subscribe({
+        next: (_) => {
+          const user = this.authService.loggedInUser();
+
+          if (user) {
+            user.photoUrl = photo.url;
+            this.authService.setCurrentUser(user);
+          }
+
+          const updatedMember = { ...this.member() };
+          updatedMember.photoUrl = photo.url;
+
+          updatedMember.photos.forEach((p) => {
+            if (p.id != photo.id) {
+              p.isMain = false;
+            } else {
+              p.isMain = true;
+            }
+          });
+
+          this.memberChanged.emit(updatedMember);
+        },
+      });
   }
 }

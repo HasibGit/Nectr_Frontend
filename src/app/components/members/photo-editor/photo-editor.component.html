@@ -3,9 +3,19 @@
   <div class="col-2">
     <img src="{{ photo.url }}" alt="user photo" class="img-thumbnail mb-1" />
 
-    <div class="text-center">
-      <div class="btn btn-sm">Main</div>
-      <div class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></div>
+    <div
+      class="text-center"
+      style="display: flex; gap: 5px; justify-content: center"
+    >
+      <button
+        class="btn btn-sm"
+        [ngClass]="photo.isMain ? 'btn-success' : 'btn-outline-dark'"
+        [disabled]="photo.isMain"
+        (click)="setAsMain(photo)"
+      >
+        Main
+      </button>
+      <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
     </div>
   </div>
   }

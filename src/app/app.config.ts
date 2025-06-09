@@ -9,6 +9,7 @@ import { errorInterceptor } from './interceptors/error.interceptor';
 import { jwtInterceptor } from './interceptors/jwt.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { loadingInterceptor } from './interceptors/loading.interceptor';
+import { GALLERY_CONFIG, GalleryConfig } from 'ng-gallery';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,5 +22,12 @@ export const appConfig: ApplicationConfig = {
       positionClass: 'toast-bottom-right',
     }),
     importProvidersFrom(NgxSpinnerModule),
+    {
+      provide: GALLERY_CONFIG,
+      useValue: {
+        autoHeight: false,
+        imageSize: 'contain',
+      } as GalleryConfig,
+    },
   ],
 };

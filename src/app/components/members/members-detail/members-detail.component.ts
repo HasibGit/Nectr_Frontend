@@ -41,6 +41,7 @@ export class MembersDetailComponent implements OnInit {
             this.images.push(
               new ImageItem({ src: photo.url, thumb: photo.url })
             );
+            console.log(this.images);
           });
         },
       });

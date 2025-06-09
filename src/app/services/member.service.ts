@@ -2,7 +2,8 @@ import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { IMember } from '../interfaces/member.interface';
-import { Observable, of, take } from 'rxjs';
+import { Observable, of, take, tap } from 'rxjs';
+import { IPhoto } from '../interfaces/photo.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -36,5 +37,23 @@ export class MemberService {
 
   updateMember(member: IMember): Observable<Object> {
     return this.http.put(this.baseUrl + '/api/users/', member);
+  }
+
+  setAsMainProfilePic(photo: IPhoto) {
+    return this.http
+      .put(`${this.baseUrl}/api/users/set-main-photo/${photo.id}`, {})
+      .pipe(
+        tap(() => {
+          this.members.update((members) =>
+            members.map((member) => {
+              if (member.photos.includes(photo)) {
+                member.photoUrl = photo.url;
+              }
+
+              return member;
+            })
+          );
+        })
+      );
   }
 }
