@@ -53,6 +53,11 @@ export class AuthService {
       const expiry = payload.exp;
       const now = Math.floor(Date.now() / 1000);
 
+      const secondsLeft = expiry - now;
+      const minutesLeft = Math.floor(secondsLeft / 60);
+
+      console.log(`Token expires in approximately ${minutesLeft} minute(s).`);
+
       return expiry < now;
     } catch {
       return true;
