@@ -1,11 +1,11 @@
-import { NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { AbstractControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-text-input',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, NgSwitch, NgSwitchCase],
+  imports: [ReactiveFormsModule, NgIf],
   templateUrl: './text-input.component.html',
   styleUrl: './text-input.component.scss',
 })

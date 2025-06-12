@@ -16,11 +16,12 @@ import { ToastrService } from 'ngx-toastr';
 import { passwordMatchValidator } from '../../validators/password-match-validator';
 import { NgIf } from '@angular/common';
 import { TextInputComponent } from '../shared/text-input/text-input.component';
+import { DateInputComponent } from '../shared/date-input/date-input.component';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, TextInputComponent],
+  imports: [ReactiveFormsModule, NgIf, TextInputComponent, DateInputComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
@@ -28,12 +29,15 @@ export class RegisterComponent implements OnInit {
   cancelRegistration = output<void>();
   //registerForm: IRegister = { username: '', password: '' };
   registerForm: FormGroup;
+  maxDate = new Date();
 
   private authService = inject(AuthService);
   private fb = inject(FormBuilder);
 
   ngOnInit(): void {
     this.initializeRegisterForm();
+
+    this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
   }
 
   initializeRegisterForm(): void {

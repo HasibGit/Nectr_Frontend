@@ -34,10 +34,11 @@
     label="Known As"
   ></app-text-input>
 
-  <app-text-input
+  <app-date-input
     [control]="registerForm.controls['dateOfBirth']"
     label="Date of Birth"
-  ></app-text-input>
+    [maxDate]="maxDate"
+  ></app-date-input>
 
   <app-text-input
     [control]="registerForm.controls['city']"
