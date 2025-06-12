@@ -40,6 +40,11 @@ export class AppComponent implements OnInit {
     }
 
     const user = JSON.parse(userJsonString);
+
+    if (this.authService.isTokenExpired(user.token)) {
+      this.authService.logout();
+    }
+
     this.authService.loggedInUser.set(user);
   }
 }

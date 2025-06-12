@@ -3,9 +3,11 @@ import { inject } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { catchError } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
+  const authService = inject(AuthService);
   const toastr = inject(ToastrService);
 
   return next(req).pipe(
@@ -32,6 +34,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             break;
 
           case 401:
+            authService.logout();
             toastr.error('Unauthorized');
             break;
 

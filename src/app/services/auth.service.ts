@@ -47,6 +47,18 @@ export class AuthService {
     this.loggedInUser.set(user);
   }
 
+  isTokenExpired(token: string) {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const expiry = payload.exp;
+      const now = Math.floor(Date.now() / 1000);
+
+      return expiry < now;
+    } catch {
+      return true;
+    }
+  }
+
   logout(): void {
     localStorage.removeItem(environment.userLocalStorageKey);
     this.loggedInUser.set(null);
