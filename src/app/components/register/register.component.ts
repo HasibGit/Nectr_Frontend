@@ -12,11 +12,13 @@ import {
 } from '../../interfaces/register.interface';
 import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { passwordMatchValidator } from '../../validators/password-match-validator';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, NgIf],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
@@ -32,14 +34,22 @@ export class RegisterComponent implements OnInit {
   }
 
   initializeRegisterForm(): void {
-    this.registerForm = new FormGroup({
-      username: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required),
-      confirmPassword: new FormControl('', Validators.required),
-    });
+    this.registerForm = new FormGroup(
+      {
+        username: new FormControl('', Validators.required),
+        password: new FormControl('', [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/),
+        ]),
+        confirmPassword: new FormControl('', Validators.required),
+      },
+      { validators: passwordMatchValidator('password', 'confirmPassword') }
+    );
   }
 
   register(): void {
+    this.registerForm.markAllAsTouched();
     console.log(this.registerForm.value);
 
     // this.authService.register(this.registerForm).subscribe({
