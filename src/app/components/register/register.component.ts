@@ -1,5 +1,11 @@
-import { Component, inject, output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, inject, OnInit, output } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import {
   IRegister,
   IRegisterResponse,
@@ -10,24 +16,38 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   cancelRegistration = output<void>();
-  registerForm: IRegister = { username: '', password: '' };
+  //registerForm: IRegister = { username: '', password: '' };
+  registerForm: FormGroup;
 
   private authService = inject(AuthService);
-  private toastr = inject(ToastrService);
+
+  ngOnInit(): void {
+    this.initializeRegisterForm();
+  }
+
+  initializeRegisterForm(): void {
+    this.registerForm = new FormGroup({
+      username: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required),
+      confirmPassword: new FormControl('', Validators.required),
+    });
+  }
 
   register(): void {
-    this.authService.register(this.registerForm).subscribe({
-      next: (response: IRegisterResponse) => {
-        console.log(response);
-        this.cancel();
-      },
-    });
+    console.log(this.registerForm.value);
+
+    // this.authService.register(this.registerForm).subscribe({
+    //   next: (response: IRegisterResponse) => {
+    //     console.log(response);
+    //     this.cancel();
+    //   },
+    // });
   }
 
   cancel(): void {
