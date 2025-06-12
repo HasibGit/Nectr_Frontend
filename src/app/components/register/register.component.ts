@@ -14,11 +14,12 @@ import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { passwordMatchValidator } from '../../validators/password-match-validator';
 import { NgIf } from '@angular/common';
+import { TextInputComponent } from '../shared/text-input/text-input.component';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf],
+  imports: [ReactiveFormsModule, NgIf, TextInputComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })

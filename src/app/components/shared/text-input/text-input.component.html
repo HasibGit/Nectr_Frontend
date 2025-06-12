@@ -1,0 +1,33 @@
+<div class="mb-3 form-floating">
+  <input
+    [type]="type"
+    class="form-control"
+    [class.is-invalid]="control.invalid && control.touched"
+    [formControl]="$any(control)"
+    [placeholder]="label"
+  />
+  <label>{{ label }}</label>
+
+  <div *ngIf="control.hasError('required')" class="invalid-feedback text-start">
+    This field is required
+  </div>
+  <div
+    *ngIf="control.hasError('minlength')"
+    class="invalid-feedback text-start"
+  >
+    Password needs to be minimum 8 characters long
+  </div>
+  <div
+    *ngIf="control.hasError('pattern') && !control.hasError('minlength')"
+    class="invalid-feedback text-start"
+  >
+    Password must contain at least one lowercase letter, one uppercase letter,
+    one number and a special character.
+  </div>
+  <div
+    *ngIf="control.hasError('passwordMismatch')"
+    class="invalid-feedback text-start"
+  >
+    Passwords do not match
+  </div>
+</div>
