@@ -2,9 +2,51 @@
   <h2 class="text-center text-dark">Sign Up</h2>
   <hr />
 
+  <div class="mb-3">
+    <label style="margin-right: 10px">Gender:</label>
+    <label class="form-check-label" style="margin-right: 10px">
+      <input
+        type="radio"
+        class="form-check-input"
+        value="male"
+        formControlName="gender"
+      />
+      Male
+    </label>
+    <label class="form-check-label">
+      <input
+        type="radio"
+        class="form-check-input"
+        value="female"
+        formControlName="gender"
+      />
+      Female
+    </label>
+  </div>
+
   <app-text-input
     [control]="registerForm.controls['username']"
     label="Username"
+  ></app-text-input>
+
+  <app-text-input
+    [control]="registerForm.controls['knownAs']"
+    label="Known As"
+  ></app-text-input>
+
+  <app-text-input
+    [control]="registerForm.controls['dateOfBirth']"
+    label="Date of Birth"
+  ></app-text-input>
+
+  <app-text-input
+    [control]="registerForm.controls['city']"
+    label="City"
+  ></app-text-input>
+
+  <app-text-input
+    [control]="registerForm.controls['country']"
+    label="Country"
   ></app-text-input>
 
   <app-text-input
