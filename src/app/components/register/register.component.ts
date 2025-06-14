@@ -17,6 +17,7 @@ import { passwordMatchValidator } from '../../validators/password-match-validato
 import { NgIf } from '@angular/common';
 import { TextInputComponent } from '../shared/text-input/text-input.component';
 import { DateInputComponent } from '../shared/date-input/date-input.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -30,9 +31,12 @@ export class RegisterComponent implements OnInit {
   //registerForm: IRegister = { username: '', password: '' };
   registerForm: FormGroup;
   maxDate = new Date();
+  validationErrors: string[] | undefined;
 
   private authService = inject(AuthService);
   private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private toastR = inject(ToastrService);
 
   ngOnInit(): void {
     this.initializeRegisterForm();
@@ -64,18 +68,27 @@ export class RegisterComponent implements OnInit {
   }
 
   register(): void {
+    const dob = this.getDateOnly(this.registerForm.get('dateOfBirth')?.value);
+    this.registerForm.patchValue({ dateOfBirth: dob });
     this.registerForm.markAllAsTouched();
-    console.log(this.registerForm.value);
 
-    // this.authService.register(this.registerForm).subscribe({
-    //   next: (response: IRegisterResponse) => {
-    //     console.log(response);
-    //     this.cancel();
-    //   },
-    // });
+    if (this.registerForm.valid) {
+      this.authService.register(this.registerForm.getRawValue()).subscribe({
+        next: (_) => this.router.navigateByUrl('/members'),
+        error: (error) => this.toastR.error(error.error),
+      });
+    }
   }
 
   cancel(): void {
     this.cancelRegistration.emit();
+  }
+
+  private getDateOnly(dob: string | undefined) {
+    if (!dob) {
+      return;
+    }
+
+    return new Date(dob).toISOString().slice(0, 10);
   }
 }
