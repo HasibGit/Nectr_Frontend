@@ -77,6 +77,18 @@ export class PhotoEditorComponent implements OnInit {
         });
 
         this.memberChanged.emit(updatedMember);
+
+        this.memberService.members.update((members) =>
+          members.map((member) => {
+            if (member.userName == user?.userName) {
+              if (!member.photos.includes(photo)) {
+                member.photos.push(photo);
+              }
+            }
+
+            return member;
+          })
+        );
       }
     };
   }
