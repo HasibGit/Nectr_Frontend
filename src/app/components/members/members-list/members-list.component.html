@@ -3,6 +3,15 @@
   <div class="col-2">
     <app-member-card [member]="member"></app-member-card>
   </div>
-
   }
 </div>
+
+@if(memberService.members()?.pagination) {
+<div class="d-flex justify-content-center">
+  <pagination
+    [totalItems]="memberService.members()?.pagination?.totalCount!"
+    [itemsPerPage]="memberService.members()?.pagination?.pageSize!"
+    (pageChanged)="onPageChange($event)"
+  ></pagination>
+</div>
+}
