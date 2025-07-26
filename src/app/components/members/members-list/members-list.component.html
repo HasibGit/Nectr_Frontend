@@ -44,6 +44,39 @@
       >
         Reset Filters
       </button>
+
+      <div class="col">
+        <div class="btn-group float-end">
+          <button
+            type="button"
+            class="btn"
+            name="orderBy"
+            (click)="loadMembers()"
+            btnRadio="lastActive"
+            [(ngModel)]="userParams.orderBy"
+            [ngClass]="{
+              'btn-dark': userParams.orderBy === 'lastActive',
+              'btn-light': userParams.orderBy !== 'lastActive'
+            }"
+          >
+            Last Active
+          </button>
+          <button
+            type="button"
+            class="btn"
+            name="orderBy"
+            (click)="loadMembers()"
+            btnRadio="created"
+            [(ngModel)]="userParams.orderBy"
+            [ngClass]="{
+              'btn-dark': userParams.orderBy === 'created',
+              'btn-light': userParams.orderBy !== 'created'
+            }"
+          >
+            Newest Members
+          </button>
+        </div>
+      </div>
     </form>
   </div>
 </div>

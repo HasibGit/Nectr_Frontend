@@ -5,11 +5,19 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { AuthService } from '../../../services/auth.service';
 import { UserParams } from '../../../interfaces/userParams';
 import { FormsModule } from '@angular/forms';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-members-list',
   standalone: true,
-  imports: [MemberCardComponent, PaginationModule, FormsModule],
+  imports: [
+    MemberCardComponent,
+    PaginationModule,
+    FormsModule,
+    ButtonsModule,
+    CommonModule,
+  ],
   templateUrl: './members-list.component.html',
   styleUrl: './members-list.component.scss',
 })
