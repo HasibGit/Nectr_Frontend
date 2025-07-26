@@ -50,7 +50,7 @@
         <a
           dropdownToggle
           class="dropdown-toggle text-light text-decoration-none"
-          >Welcome {{ authService.loggedInUser()?.userName }}</a
+          >Welcome {{ authService.loggedInUser()?.knownAs }}</a
         >
         <div *dropdownMenu class="dropdown-menu">
           <a routerLink="/member/edit" class="dropdown-item">Edit Profile</a>

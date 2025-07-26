@@ -27,9 +27,9 @@ export class AuthService {
       );
   }
 
-  register(registerData: IRegister): Observable<IRegisterResponse> {
+  register(registerData: IRegister): Observable<ILoginResponse> {
     return this.http
-      .post<IRegisterResponse>(
+      .post<ILoginResponse>(
         `${environment.baseUrl}/api/account/register`,
         registerData
       )
