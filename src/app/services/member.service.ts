@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { IMember } from '../interfaces/member.interface';
 import { Observable, of, take, tap } from 'rxjs';
 import { IPhoto } from '../interfaces/photo.interface';
@@ -13,10 +13,16 @@ import { UserParams } from '../interfaces/userParams';
 export class MemberService {
   baseUrl = environment.baseUrl;
   http = inject(HttpClient);
-
   members = signal<PaginationResult<IMember[]> | null>(null);
+  memberCache = new Map<string, HttpResponse<IMember[]>>();
 
   getMembers(userParams: UserParams): void {
+    const response = this.memberCache.get(Object.values(userParams).join('-'));
+
+    if (response) {
+      return this.setPaginationResponse(response);
+    }
+
     let params = this.setPaginationHeaders(
       userParams.pageNumber,
       userParams.pageSize
@@ -35,12 +41,17 @@ export class MemberService {
       .pipe(take(1))
       .subscribe({
         next: (response) => {
-          this.members.set({
-            items: <IMember[]>response.body,
-            pagination: JSON.parse(response.headers.get('Pagination')!),
-          });
+          this.setPaginationResponse(response);
+          this.memberCache.set(Object.values(userParams).join('-'), response);
         },
       });
+  }
+
+  private setPaginationResponse(response: HttpResponse<IMember[]>): void {
+    this.members.set({
+      items: <IMember[]>response.body,
+      pagination: JSON.parse(response.headers.get('Pagination')!),
+    });
   }
 
   getMember(username: string): Observable<IMember> {
