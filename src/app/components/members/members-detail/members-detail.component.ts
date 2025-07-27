@@ -5,11 +5,13 @@ import { IMember } from '../../../interfaces/member.interface';
 import { take } from 'rxjs';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
+import { TimeagoModule } from 'ngx-timeago';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-members-detail',
   standalone: true,
-  imports: [TabsModule, GalleryModule],
+  imports: [TabsModule, GalleryModule, TimeagoModule, DatePipe],
   templateUrl: './members-detail.component.html',
   styleUrl: './members-detail.component.scss',
 })
