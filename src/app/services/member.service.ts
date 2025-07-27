@@ -6,6 +6,7 @@ import { Observable, of, take, tap } from 'rxjs';
 import { IPhoto } from '../interfaces/photo.interface';
 import { PaginationResult } from '../interfaces/pagination';
 import { UserParams } from '../interfaces/userParams';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,25 +14,34 @@ import { UserParams } from '../interfaces/userParams';
 export class MemberService {
   baseUrl = environment.baseUrl;
   http = inject(HttpClient);
+  authService = inject(AuthService);
+  user = this.authService.loggedInUser();
   members = signal<PaginationResult<IMember[]> | null>(null);
   memberCache = new Map<string, HttpResponse<IMember[]>>();
+  userParams = signal<UserParams>(new UserParams(this.user!));
 
-  getMembers(userParams: UserParams): void {
-    const response = this.memberCache.get(Object.values(userParams).join('-'));
+  resetUserParams() {
+    this.userParams = signal<UserParams>(new UserParams(this.user!));
+  }
+
+  getMembers(): void {
+    const response = this.memberCache.get(
+      Object.values(this.userParams()).join('-')
+    );
 
     if (response) {
       return this.setPaginationResponse(response);
     }
 
     let params = this.setPaginationHeaders(
-      userParams.pageNumber,
-      userParams.pageSize
+      this.userParams().pageNumber,
+      this.userParams().pageSize
     );
 
-    params = params.append('minAge', userParams.minAge);
-    params = params.append('maxAge', userParams.maxAge);
-    params = params.append('gender', userParams.gender);
-    params = params.append('orderBy', userParams.orderBy);
+    params = params.append('minAge', this.userParams().minAge);
+    params = params.append('maxAge', this.userParams().maxAge);
+    params = params.append('gender', this.userParams().gender);
+    params = params.append('orderBy', this.userParams().orderBy);
 
     this.http
       .get<IMember[]>(this.baseUrl + '/api/users', {
@@ -42,7 +52,10 @@ export class MemberService {
       .subscribe({
         next: (response) => {
           this.setPaginationResponse(response);
-          this.memberCache.set(Object.values(userParams).join('-'), response);
+          this.memberCache.set(
+            Object.values(this.userParams()).join('-'),
+            response
+          );
         },
       });
   }
@@ -55,15 +68,15 @@ export class MemberService {
   }
 
   getMember(username: string): Observable<IMember> {
-    // const idx = this.members().findIndex(
-    //   (member) => member.userName === username
-    // );
+    const members = [...this.memberCache.values()].flatMap(
+      (resp) => resp.body ?? []
+    );
 
-    // if (idx >= 0) {
-    //   return of(this.members()[idx]);
-    // }
+    const cachedMember = members.find((member) => member.userName === username);
 
-    return this.http.get<IMember>(this.baseUrl + '/api/users/' + username);
+    return cachedMember
+      ? of(cachedMember)
+      : this.http.get<IMember>(`${this.baseUrl}/api/users/${username}`);
   }
 
   updateMember(member: IMember): Observable<Object> {

@@ -22,9 +22,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './members-list.component.scss',
 })
 export class MembersListComponent implements OnInit {
-  authService = inject(AuthService);
   memberService = inject(MemberService);
-  userParams = new UserParams(this.authService.loggedInUser()!);
   genderList = [
     { value: 'male', displayName: 'Male' },
     { value: 'female', displayName: 'Female' },
@@ -37,18 +35,18 @@ export class MembersListComponent implements OnInit {
   }
 
   loadMembers(): void {
-    this.memberService.getMembers(this.userParams);
+    this.memberService.getMembers();
   }
 
   onPageChange(event: any): void {
-    if (this.userParams.pageNumber !== event.page) {
-      this.userParams.pageNumber = event.page;
+    if (this.memberService.userParams().pageNumber !== event.page) {
+      this.memberService.userParams().pageNumber = event.page;
       this.loadMembers();
     }
   }
 
   resetFilters(): void {
-    this.userParams = new UserParams(this.authService.loggedInUser()!);
+    this.memberService.resetUserParams();
     this.loadMembers();
   }
 }
