@@ -11,7 +11,6 @@ export function passwordMatchValidator(
     if (password !== confirmPassword) {
       group.get(confirmPasswordKey)?.setErrors({ passwordMismatch: true });
     } else {
-      // If previously set, clear it
       const errors = group.get(confirmPasswordKey)?.errors;
       if (errors && errors['passwordMismatch']) {
         delete errors['passwordMismatch'];

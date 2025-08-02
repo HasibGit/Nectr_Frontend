@@ -86,40 +86,52 @@ export class MemberService {
   setAsMainProfilePic(photo: IPhoto) {
     return this.http
       .put(`${this.baseUrl}/api/users/set-main-photo/${photo.id}`, {})
-      .pipe
-      // tap(() => {
-      //   this.members.update((members) =>
-      //     members.map((member) => {
-      //       if (member.photos.includes(photo)) {
-      //         member.photoUrl = photo.url;
-      //       }
+      .pipe(
+        tap(() => {
+          this.members.update((members) => {
+            if (members && members.items.length) {
+              members.items.map((member) => {
+                if (member.photos.includes(photo)) {
+                  member.photoUrl = photo.url;
+                }
 
-      //       return member;
-      //     })
-      //   );
-      // })
-      ();
+                return member;
+              });
+
+              return members;
+            }
+
+            return members;
+          });
+        })
+      );
   }
 
   deletePhoto(photo: IPhoto) {
     return this.http
       .delete(`${this.baseUrl}/api/users/delete-photo/${photo.id}`, {})
-      .pipe
-      // tap(() => {
-      //   this.members.update((members) =>
-      //     members.map((member) => {
-      //       const filteredPhotos = member.photos.filter((p) => p !== photo);
-      //       const isPhotoUrlRemoved = member.photoUrl === photo.url;
+      .pipe(
+        tap(() => {
+          this.members.update((members) => {
+            if (!members || !members.items.length) {
+              return members;
+            }
 
-      //       return {
-      //         ...member,
-      //         photos: filteredPhotos,
-      //         photoUrl: isPhotoUrlRemoved ? '' : member.photoUrl,
-      //       };
-      //     })
-      //   );
-      // })
-      ();
+            members.items.map((member) => {
+              const filteredPhotos = member.photos.filter((p) => p !== photo);
+              const isPhotoUrlRemoved = member.photoUrl === photo.url;
+
+              return {
+                ...member,
+                photos: filteredPhotos,
+                photoUrl: isPhotoUrlRemoved ? '' : member.photoUrl,
+              };
+            });
+
+            return members;
+          });
+        })
+      );
   }
 
   private setPaginationHeaders(

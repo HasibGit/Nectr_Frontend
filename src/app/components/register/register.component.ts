@@ -28,7 +28,6 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
   cancelRegistration = output<void>();
-  //registerForm: IRegister = { username: '', password: '' };
   registerForm: FormGroup;
   maxDate = new Date();
   validationErrors: string[] | undefined;
