@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
+import { IMember } from '../interfaces/member.interface';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +18,8 @@ export class LikesService {
     );
   }
 
-  getLikes(predicate: string) {
-    return this.http.get(
+  getLikes(predicate: string): Observable<IMember[]> {
+    return this.http.get<IMember[]>(
       `${environment.baseUrl}/api/likes?predicate=${predicate}`
     );
   }

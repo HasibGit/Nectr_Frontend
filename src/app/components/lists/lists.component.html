@@ -1,1 +1,54 @@
-<p>lists works!</p>
+<div class="text-center mt-3">
+  <h2>{{ getTitle() }}</h2>
+</div>
+
+<div class="container mt-3">
+  <div class="d-flex">
+    <div class="btn-group" style="display: flex; gap: 4px">
+      <button
+        class="btn"
+        [ngClass]="{
+          'btn-dark': predicate === 'liked',
+          'btn-light': predicate !== 'liked'
+        }"
+        btnRadio="liked"
+        [(ngModel)]="predicate"
+        (click)="loadLikes()"
+      >
+        Liked
+      </button>
+      <button
+        class="btn"
+        [ngClass]="{
+          'btn-dark': predicate === 'likedBy',
+          'btn-light': predicate !== 'likedBy'
+        }"
+        btnRadio="likedBy"
+        [(ngModel)]="predicate"
+        (click)="loadLikes()"
+      >
+        Liked By
+      </button>
+      <button
+        class="btn"
+        [ngClass]="{
+          'btn-dark': predicate === 'mutual',
+          'btn-light': predicate !== 'mutual'
+        }"
+        btnRadio="mutual"
+        [(ngModel)]="predicate"
+        (click)="loadLikes()"
+      >
+        Mutual
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    @for(member of members; track member.id) {
+    <div class="col-2">
+      <app-member-card [member]="member"></app-member-card>
+    </div>
+    }
+  </div>
+</div>
