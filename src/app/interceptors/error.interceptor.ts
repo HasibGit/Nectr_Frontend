@@ -35,6 +35,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
           case 401:
             authService.logout();
+            router.navigateByUrl('/');
             toastr.error('Unauthorized');
             break;
 
