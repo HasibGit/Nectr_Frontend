@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { LikesService } from '../../services/likes.service';
 import { IMember } from '../../interfaces/member.interface';
 import { CommonModule } from '@angular/common';
@@ -20,7 +20,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
   templateUrl: './lists.component.html',
   styleUrl: './lists.component.scss',
 })
-export class ListsComponent implements OnInit {
+export class ListsComponent implements OnInit, OnDestroy {
   private likesService = inject(LikesService);
   predicate = 'liked';
   pageNumber = 1;
@@ -40,5 +40,10 @@ export class ListsComponent implements OnInit {
       this.pageNumber = event.page;
       this.loadLikes();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.likesService.paginatedResult.set(null);
+    this.likesService.likedUserIds.set([]);
   }
 }
