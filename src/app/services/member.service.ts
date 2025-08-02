@@ -7,6 +7,7 @@ import { IPhoto } from '../interfaces/photo.interface';
 import { PaginationResult } from '../interfaces/pagination';
 import { UserParams } from '../interfaces/userParams';
 import { AuthService } from './auth.service';
+import { PaginationHelperService } from './pagination-helper.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,7 @@ export class MemberService {
   baseUrl = environment.baseUrl;
   http = inject(HttpClient);
   authService = inject(AuthService);
+  paginationHelperService = inject(PaginationHelperService);
   user = this.authService.loggedInUser();
   members = signal<PaginationResult<IMember[]> | null>(null);
   memberCache = new Map<string, HttpResponse<IMember[]>>();
@@ -30,10 +32,13 @@ export class MemberService {
     );
 
     if (response) {
-      return this.setPaginationResponse(response);
+      return this.paginationHelperService.setPaginationResponse(
+        response,
+        this.members
+      );
     }
 
-    let params = this.setPaginationHeaders(
+    let params = this.paginationHelperService.setPaginationHeaders(
       this.userParams().pageNumber,
       this.userParams().pageSize
     );
@@ -51,20 +56,16 @@ export class MemberService {
       .pipe(take(1))
       .subscribe({
         next: (response) => {
-          this.setPaginationResponse(response);
+          this.paginationHelperService.setPaginationResponse(
+            response,
+            this.members
+          );
           this.memberCache.set(
             Object.values(this.userParams()).join('-'),
             response
           );
         },
       });
-  }
-
-  private setPaginationResponse(response: HttpResponse<IMember[]>): void {
-    this.members.set({
-      items: <IMember[]>response.body,
-      pagination: JSON.parse(response.headers.get('Pagination')!),
-    });
   }
 
   getMember(username: string): Observable<IMember> {
@@ -132,19 +133,5 @@ export class MemberService {
           });
         })
       );
-  }
-
-  private setPaginationHeaders(
-    pageNumber: number,
-    pageSize: number
-  ): HttpParams {
-    let params = new HttpParams();
-
-    if (pageNumber && pageSize) {
-      params = params.append('pageNumber', pageNumber);
-      params = params.append('pageSize', pageSize);
-    }
-
-    return params;
   }
 }
