@@ -31,17 +31,6 @@ export class ListsComponent implements OnInit {
     this.loadLikes();
   }
 
-  getTitle(): string {
-    switch (this.predicate) {
-      case 'liked':
-        return 'People you liked';
-      case 'likedBy':
-        return 'People who likes you';
-      default:
-        return 'Mutual';
-    }
-  }
-
   loadLikes() {
     this.likesService.getLikes(this.predicate, this.pageNumber, this.pageSize);
   }
