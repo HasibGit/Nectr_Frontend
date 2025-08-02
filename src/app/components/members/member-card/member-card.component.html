@@ -15,7 +15,9 @@
         </button>
       </li>
       <li class="list-inline-item">
-        <button class="btn btn-light"><i class="fa fa-heart"></i></button>
+        <button class="btn btn-light" (click)="toggleLike()">
+          <i class="fa fa-heart" [ngClass]="{ 'text-danger': isLiked }"></i>
+        </button>
       </li>
       <li class="list-inline-item">
         <button class="btn btn-light"><i class="fa fa-envelope"></i></button>
@@ -27,6 +29,9 @@
     <h6 class="card-title text-center mb-1">
       <i class="fa fa-user me-2"></i>
       {{ member().knownAs }}
+      @if(isLiked) {
+      <i class="fa fa-heart ms-2 text-danger"></i>
+      }
     </h6>
     <p class="card-text text-muted text-center">Age: {{ member().age }}</p>
     <p class="card-text text-muted text-center">{{ member().city }}</p>

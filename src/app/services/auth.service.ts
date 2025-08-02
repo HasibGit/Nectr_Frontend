@@ -4,6 +4,7 @@ import { ILogin, ILoginResponse } from '../interfaces/login.interface';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { IRegister, IRegisterResponse } from '../interfaces/register.interface';
+import { LikesService } from './likes.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ import { IRegister, IRegisterResponse } from '../interfaces/register.interface';
 export class AuthService {
   loggedInUser = signal<ILoginResponse | null>(null);
   private http = inject(HttpClient);
+  likesService = inject(LikesService);
 
   login(loginData: ILogin): Observable<ILoginResponse> {
     return this.http
@@ -45,6 +47,7 @@ export class AuthService {
   setCurrentUser(user: ILoginResponse) {
     localStorage.setItem(environment.userLocalStorageKey, JSON.stringify(user));
     this.loggedInUser.set(user);
+    this.likesService.getLikedUserIds();
   }
 
   isTokenExpired(token: string) {
