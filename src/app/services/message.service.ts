@@ -35,4 +35,10 @@ export class MessageService {
           ),
       });
   }
+
+  getMessageThread(username: string) {
+    return this.http.get<IMessage[]>(
+      this.baseUrl + '/api/messages/thread/' + username
+    );
+  }
 }

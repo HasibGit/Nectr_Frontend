@@ -43,15 +43,15 @@
   </thead>
   <tbody class="align-middle">
     @for(message of messageService.paginatedResult()?.items; track message.id){
-    <tr routerLink="{{ getRoute(message) }}">
+    <tr [routerLink]="getRoute(message)">
       <td>{{ message.content }}</td>
       <td>
         <div>
           <img
             [src]="
               container === 'Outbox'
-                ? message.recipientPhotoUrl || '../../../assets/user.png'
-                : message.senderPhotoUrl || '../../../assets/user.png'
+                ? message.recipientPhotoUrl || './assets/user.png'
+                : message.senderPhotoUrl || './assets/user.png'
             "
             alt="user image"
             class="rounded-circle me-2"

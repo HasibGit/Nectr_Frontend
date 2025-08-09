@@ -1,0 +1,64 @@
+<div class="card">
+  <div class="card-body">
+    @if(messages.length === 0){
+    <p>No messages</p>
+    }@else {
+    <ul class="chat">
+      @for (message of messages; track message.id) {
+      <li>
+        <div>
+          <span
+            class="chat-img float-end"
+            style="
+              width: 100%;
+              border-bottom: 1px dotted #b3a9a9;
+              margin-bottom: 8px;
+            "
+          >
+            <img
+              class="rounded-circle"
+              src="{{ message.senderPhotoUrl || './assets/user.png' }}"
+              alt="Message sender image"
+            />
+            <div class="chat-body">
+              <div class="header">
+                <small class="text-muted">
+                  <span class="fa fa-clock-o">{{
+                    message.messageSent | timeago
+                  }}</span>
+                  @if(!message.dateRead && message.senderUsername !==
+                  username()){
+                  <span class="text-danger">(unread)</span>
+                  } @if(message.dateRead && message.senderUsername !==
+                  username()){
+                  <span class="text-success"
+                    >(read {{ message.dateRead | timeago }})</span
+                  >
+                  }
+                </small>
+              </div>
+              <p>{{ message.content }}</p>
+            </div>
+          </span>
+        </div>
+      </li>
+      }
+    </ul>
+    }
+  </div>
+
+  <div class="card-footer">
+    <form>
+      <div class="input-group">
+        <input
+          type="text"
+          class="form-control input-sm"
+          placeholder="Send message"
+        />
+        <div class="input-group-append">
+          <button class="btn btn-dark ms-3" type="submit">Send</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
