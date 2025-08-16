@@ -9,6 +9,7 @@ import { NotFoundComponent } from './components/error/not-found/not-found.compon
 import { ServerErrorComponent } from './components/error/server-error/server-error.component';
 import { MemberEditComponent } from './components/members/member-edit/member-edit.component';
 import { preventUnsavedChangesGuard } from './guards/prevent-unsaved-changes.guard';
+import { memberResolver } from './resolvers/member.resolver';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Public route
@@ -19,7 +20,11 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: 'members', component: MembersListComponent },
-      { path: 'members/:username', component: MembersDetailComponent },
+      {
+        path: 'members/:username',
+        component: MembersDetailComponent,
+        resolve: { member: memberResolver },
+      },
       {
         path: 'member/edit',
         component: MemberEditComponent,
