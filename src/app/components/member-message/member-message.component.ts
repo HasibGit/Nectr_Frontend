@@ -12,16 +12,8 @@ import { TimeagoModule } from 'ngx-timeago';
 })
 export class MemberMessageComponent implements OnInit {
   username = input.required<string>();
-  messages: IMessage[] = [];
+  messages = input.required<IMessage[]>();
   private messageService = inject(MessageService);
 
-  ngOnInit(): void {
-    this.loadMessages();
-  }
-
-  loadMessages(): void {
-    this.messageService.getMessageThread(this.username()).subscribe({
-      next: (messages) => (this.messages = messages),
-    });
-  }
+  ngOnInit(): void {}
 }
