@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { PaginationResult } from '../interfaces/pagination';
 import { IMessage } from '../interfaces/message';
 import { PaginationHelperService } from './pagination-helper.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -40,5 +41,12 @@ export class MessageService {
     return this.http.get<IMessage[]>(
       this.baseUrl + '/api/messages/thread/' + username
     );
+  }
+
+  sendMessage(username: string, content: string): Observable<IMessage> {
+    return this.http.post<IMessage>(this.baseUrl + '/api/messages', {
+      recipientUsername: username,
+      content,
+    });
   }
 }

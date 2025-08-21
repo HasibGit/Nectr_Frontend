@@ -88,4 +88,8 @@ export class MembersDetailComponent implements OnInit, AfterViewInit {
       }
     }
   }
+
+  onUpdateMessages(message: IMessage) {
+    this.messages.push(message);
+  }
 }
