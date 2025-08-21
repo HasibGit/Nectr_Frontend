@@ -6,6 +6,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { RouterModule } from '@angular/router';
 import { TimeagoModule } from 'ngx-timeago';
 import { IMessage } from '../../interfaces/message';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-messages',
@@ -37,6 +38,26 @@ export class MessagesComponent implements OnInit {
       this.pageSize,
       this.container
     );
+  }
+
+  deleteMessage(id: number) {
+    this.messageService
+      .deleteMessage(id)
+      .pipe(take(1))
+      .subscribe({
+        next: (_) => {
+          this.messageService.paginatedResult.update((prev) => {
+            if (prev && prev.items) {
+              const idx = prev.items.findIndex((m) => m.id === id);
+              prev.items.splice(idx, 1);
+
+              return prev;
+            }
+
+            return prev;
+          });
+        },
+      });
   }
 
   getRoute(message: IMessage): string {
