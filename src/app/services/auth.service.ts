@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal, computed } from '@angular/core';
 import { ILogin, ILoginResponse } from '../interfaces/login.interface';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -13,6 +13,17 @@ export class AuthService {
   loggedInUser = signal<ILoginResponse | null>(null);
   private http = inject(HttpClient);
   likesService = inject(LikesService);
+  roles = computed(() => {
+    const user = this.loggedInUser();
+
+    if (user && user.token) {
+      const role = JSON.parse(atob(user.token.split('.')[1])).role;
+
+      return Array.isArray(role) ? role : [role];
+    }
+
+    return [];
+  });
 
   login(loginData: ILogin): Observable<ILoginResponse> {
     return this.http
