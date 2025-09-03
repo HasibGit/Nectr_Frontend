@@ -35,7 +35,7 @@
         </select>
       </div>
 
-      <button class="btn btn-dark mx-2" type="submit">Apply Filters</button>
+      <button class="btn btn-primary mx-2" type="submit">Apply Filters</button>
       <button
         class="btn btn-light"
         style="margin-left: 8px"
@@ -55,7 +55,8 @@
             btnRadio="lastActive"
             [(ngModel)]="memberService.userParams().orderBy"
             [ngClass]="{
-              'btn-dark': memberService.userParams().orderBy === 'lastActive',
+              'btn-primary':
+                memberService.userParams().orderBy === 'lastActive',
               'btn-light': memberService.userParams().orderBy !== 'lastActive'
             }"
           >
@@ -69,7 +70,7 @@
             btnRadio="created"
             [(ngModel)]="memberService.userParams().orderBy"
             [ngClass]="{
-              'btn-dark': memberService.userParams().orderBy === 'created',
+              'btn-primary': memberService.userParams().orderBy === 'created',
               'btn-light': memberService.userParams().orderBy !== 'created'
             }"
           >
