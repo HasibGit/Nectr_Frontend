@@ -5,6 +5,7 @@ import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { IRegister, IRegisterResponse } from '../interfaces/register.interface';
 import { LikesService } from './likes.service';
+import { PresenceService } from './presence.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,8 @@ export class AuthService {
   loggedInUser = signal<ILoginResponse | null>(null);
   private http = inject(HttpClient);
   likesService = inject(LikesService);
+  private presenceService = inject(PresenceService);
+
   roles = computed(() => {
     const user = this.loggedInUser();
 
@@ -59,6 +62,7 @@ export class AuthService {
     localStorage.setItem(environment.userLocalStorageKey, JSON.stringify(user));
     this.loggedInUser.set(user);
     this.likesService.getLikedUserIds();
+    this.presenceService.createHubConnection(user);
   }
 
   isTokenExpired(token: string) {
@@ -81,5 +85,6 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(environment.userLocalStorageKey);
     this.loggedInUser.set(null);
+    this.presenceService.stopHubConnection();
   }
 }

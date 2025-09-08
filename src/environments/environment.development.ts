@@ -2,4 +2,5 @@ export const environment = {
   production: false,
   baseUrl: 'https://localhost:5001',
   userLocalStorageKey: 'NectR_User',
+  hubsUrl: 'https://localhost:5001/hubs/',
 };
