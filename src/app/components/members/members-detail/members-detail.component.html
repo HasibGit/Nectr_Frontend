@@ -8,6 +8,11 @@
       />
 
       <div class="card-body">
+        <div class="mb-2">
+          @if(presenceService.onlineUsers().includes(member.userName)) {
+          <i class="fa fa-user-circle text-success"></i> Online } @else {
+          <i class="fa fa-user-circle"></i> Offline }
+        </div>
         <div>
           <strong>Location:</strong>
           <p>{{ member.city }}, {{ member.country }}</p>

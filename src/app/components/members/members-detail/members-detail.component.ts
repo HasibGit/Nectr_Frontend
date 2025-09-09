@@ -16,6 +16,7 @@ import { DatePipe } from '@angular/common';
 import { MemberMessageComponent } from '../../member-message/member-message.component';
 import { IMessage } from '../../../interfaces/message';
 import { MessageService } from '../../../services/message.service';
+import { PresenceService } from '../../../services/presence.service';
 
 @Component({
   selector: 'app-members-detail',
@@ -32,6 +33,8 @@ import { MessageService } from '../../../services/message.service';
 })
 export class MembersDetailComponent implements OnInit, AfterViewInit {
   @ViewChild('memberTabs', { static: false }) memberTabs: TabsetComponent;
+
+  presenceService = inject(PresenceService);
   private messageService = inject(MessageService);
   private route = inject(ActivatedRoute);
 
