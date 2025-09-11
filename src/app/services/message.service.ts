@@ -39,6 +39,10 @@ export class MessageService {
     this.hubConnection.on('ReceiveMessageThread', (messages) => {
       this.messageThread.set(messages);
     });
+
+    this.hubConnection.on('NewMessage', (message) => {
+      this.messageThread.update((messages) => [...messages, message]);
+    });
   }
 
   stopHubConnection() {
@@ -77,11 +81,31 @@ export class MessageService {
     );
   }
 
-  sendMessage(username: string, content: string): Observable<IMessage> {
-    return this.http.post<IMessage>(this.baseUrl + '/api/messages', {
-      recipientUsername: username,
-      content,
-    });
+  async sendMessage(
+    username: string,
+    content: string
+  ): Promise<IMessage | undefined> {
+    if (!this.hubConnection) {
+      throw new Error('Hub connection not established');
+    }
+
+    if (this.hubConnection.state !== HubConnectionState.Connected) {
+      throw new Error('Hub connection not connected');
+    }
+
+    if (!content.trim()) {
+      throw new Error('Message content cannot be empty');
+    }
+
+    try {
+      return await this.hubConnection.invoke('SendMessage', {
+        recipientUsername: username,
+        content: content.trim(),
+      });
+    } catch (error) {
+      console.error('SignalR invoke error:', error);
+      throw error;
+    }
   }
 
   deleteMessage(id: number) {

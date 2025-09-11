@@ -20,11 +20,8 @@ export class MemberMessageComponent {
   sendMessage() {
     this.messageService
       .sendMessage(this.username(), this.messageContent)
-      .pipe(take(1))
-      .subscribe({
-        next: (message) => {
-          this.messageForm.reset();
-        },
+      .then(() => {
+        this.messageForm?.reset();
       });
   }
 }
