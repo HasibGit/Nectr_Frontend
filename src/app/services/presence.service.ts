@@ -25,14 +25,6 @@ export class PresenceService {
       console.log(error);
     });
 
-    // this.hubConnection.on('UserIsOnline', (username: string) => {
-    //   this.toastr.info(username + ' has connected');
-    // });
-
-    // this.hubConnection.on('UserIsOffline', (username: string) => {
-    //   this.toastr.warning(username + ' has disconnected');
-    // });
-
     this.hubConnection.on('GetOnlineUsers', (usernames) => {
       this.onlineUsers.set(usernames.result || []);
     });
