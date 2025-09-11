@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   inject,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -17,6 +18,7 @@ import { MemberMessageComponent } from '../../member-message/member-message.comp
 import { IMessage } from '../../../interfaces/message';
 import { MessageService } from '../../../services/message.service';
 import { PresenceService } from '../../../services/presence.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-members-detail',
@@ -31,17 +33,19 @@ import { PresenceService } from '../../../services/presence.service';
   templateUrl: './members-detail.component.html',
   styleUrl: './members-detail.component.scss',
 })
-export class MembersDetailComponent implements OnInit, AfterViewInit {
+export class MembersDetailComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @ViewChild('memberTabs', { static: false }) memberTabs: TabsetComponent;
 
   presenceService = inject(PresenceService);
+  private authService = inject(AuthService);
   private messageService = inject(MessageService);
   private route = inject(ActivatedRoute);
 
   member: IMember;
   images: GalleryItem[] = [];
   activeTab: TabDirective;
-  messages: IMessage[] = [];
 
   ngOnInit(): void {
     this.route.data.subscribe({
@@ -58,6 +62,10 @@ export class MembersDetailComponent implements OnInit, AfterViewInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.messageService.stopHubConnection();
+  }
+
   ngAfterViewInit(): void {
     this.route.queryParams.subscribe({
       next: (params) => {
@@ -71,14 +79,14 @@ export class MembersDetailComponent implements OnInit, AfterViewInit {
   onTabActivated(data: TabDirective) {
     this.activeTab = data;
 
-    if (
-      this.activeTab.heading === 'Messages' &&
-      this.messages.length === 0 &&
-      this.member
-    ) {
-      this.messageService.getMessageThread(this.member.userName).subscribe({
-        next: (messages) => (this.messages = messages),
-      });
+    if (this.activeTab.heading === 'Messages' && this.member) {
+      const user = this.authService.loggedInUser();
+
+      if (!user) return;
+
+      this.messageService.createHubConnection(user, this.member.userName);
+    } else {
+      this.messageService.stopHubConnection();
     }
   }
 
@@ -90,9 +98,5 @@ export class MembersDetailComponent implements OnInit, AfterViewInit {
         tab.active = true;
       }
     }
-  }
-
-  onUpdateMessages(message: IMessage) {
-    this.messages.push(message);
   }
 }

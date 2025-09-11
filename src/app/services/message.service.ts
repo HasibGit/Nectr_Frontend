@@ -5,15 +5,49 @@ import { PaginationResult } from '../interfaces/pagination';
 import { IMessage } from '../interfaces/message';
 import { PaginationHelperService } from './pagination-helper.service';
 import { Observable } from 'rxjs';
+import {
+  HubConnection,
+  HubConnectionBuilder,
+  HubConnectionState,
+} from '@microsoft/signalr';
+import { ILoginResponse } from '../interfaces/login.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MessageService {
   baseUrl = environment.baseUrl;
+  hubUrl = environment.hubsUrl;
   private http = inject(HttpClient);
   private paginationHelperService = inject(PaginationHelperService);
+  private hubConnection?: HubConnection;
   paginatedResult = signal<PaginationResult<IMessage[]> | null>(null);
+  messageThread = signal<IMessage[]>([]);
+
+  createHubConnection(user: ILoginResponse, otherUserName: string) {
+    this.hubConnection = new HubConnectionBuilder()
+      .withUrl(this.hubUrl + 'message?user=' + otherUserName, {
+        accessTokenFactory: () => user.token,
+      })
+      .withAutomaticReconnect()
+      .build();
+
+    this.hubConnection.start().catch((error) => {
+      console.log(error);
+    });
+
+    this.hubConnection.on('ReceiveMessageThread', (messages) => {
+      this.messageThread.set(messages);
+    });
+  }
+
+  stopHubConnection() {
+    if (this.hubConnection?.state === HubConnectionState.Connected) {
+      this.hubConnection.stop().catch((error) => {
+        console.log(error);
+      });
+    }
+  }
 
   getMessages(pageNumber: number, pageSize: number, container: string) {
     let params = this.paginationHelperService.setPaginationHeaders(
