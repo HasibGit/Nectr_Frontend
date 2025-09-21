@@ -37,7 +37,7 @@ export class PresenceService {
         .info(knownAs + ' has sent a new message')
         .onTap.pipe(take(1))
         .subscribe(() => {
-          this.router.navigateByUrl('/members/' + username + '?tab="Messages');
+          this.router.navigateByUrl('/members/' + username + '?tab=Messages');
         });
     });
   }

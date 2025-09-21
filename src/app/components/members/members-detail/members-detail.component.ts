@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MemberService } from '../../../services/member.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IMember } from '../../../interfaces/member.interface';
 import { take } from 'rxjs';
 import { TabDirective, TabsetComponent, TabsModule } from 'ngx-bootstrap/tabs';
@@ -19,6 +19,7 @@ import { IMessage } from '../../../interfaces/message';
 import { MessageService } from '../../../services/message.service';
 import { PresenceService } from '../../../services/presence.service';
 import { AuthService } from '../../../services/auth.service';
+import { HubConnection, HubConnectionState } from '@microsoft/signalr';
 
 @Component({
   selector: 'app-members-detail',
@@ -42,6 +43,7 @@ export class MembersDetailComponent
   private authService = inject(AuthService);
   private messageService = inject(MessageService);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   member: IMember;
   images: GalleryItem[] = [];
@@ -59,6 +61,10 @@ export class MembersDetailComponent
             );
           });
       },
+    });
+
+    this.route.paramMap.subscribe({
+      next: (_) => this.onRouteParamsChange(),
     });
   }
 
@@ -78,6 +84,11 @@ export class MembersDetailComponent
 
   onTabActivated(data: TabDirective) {
     this.activeTab = data;
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { tab: this.activeTab.heading },
+      queryParamsHandling: 'merge',
+    });
 
     if (this.activeTab.heading === 'Messages' && this.member) {
       const user = this.authService.loggedInUser();
@@ -87,6 +98,22 @@ export class MembersDetailComponent
       this.messageService.createHubConnection(user, this.member.userName);
     } else {
       this.messageService.stopHubConnection();
+    }
+  }
+
+  onRouteParamsChange() {
+    const user = this.authService.loggedInUser();
+
+    if (!user) return;
+
+    if (
+      this.messageService.hubConnection?.state ===
+        HubConnectionState.Connected &&
+      this.activeTab.heading === 'Messages'
+    ) {
+      this.messageService.hubConnection.stop().then(() => {
+        this.messageService.createHubConnection(user, this.member.userName);
+      });
     }
   }
 

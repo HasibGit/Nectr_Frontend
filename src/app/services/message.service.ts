@@ -20,7 +20,7 @@ export class MessageService {
   hubUrl = environment.hubsUrl;
   private http = inject(HttpClient);
   private paginationHelperService = inject(PaginationHelperService);
-  private hubConnection?: HubConnection;
+  hubConnection?: HubConnection;
   paginatedResult = signal<PaginationResult<IMessage[]> | null>(null);
   messageThread = signal<IMessage[]>([]);
 
