@@ -11,6 +11,7 @@ import {
   HubConnectionState,
 } from '@microsoft/signalr';
 import { ILoginResponse } from '../interfaces/login.interface';
+import { Group } from '../interfaces/group.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -42,6 +43,20 @@ export class MessageService {
 
     this.hubConnection.on('NewMessage', (message) => {
       this.messageThread.update((messages) => [...messages, message]);
+    });
+
+    this.hubConnection.on('UpdatedGroup', (group: Group) => {
+      if (group.connections.some((x) => x.userName === otherUserName)) {
+        this.messageThread.update((messages) => {
+          messages.forEach((message) => {
+            if (!message.dateRead) {
+              message.dateRead = new Date(Date.now());
+            }
+          });
+
+          return messages;
+        });
+      }
     });
   }
 
