@@ -28,6 +28,14 @@ export class PresenceService {
       console.log(error);
     });
 
+    this.hubConnection.on('UserIsOnline', (username) => {
+      this.onlineUsers.update((users) => [...users, username]);
+    });
+
+    this.hubConnection.on('UserIsOffline', (username) => {
+      this.onlineUsers.update((users) => users.filter((x) => x !== username));
+    });
+
     this.hubConnection.on('GetOnlineUsers', (usernames) => {
       this.onlineUsers.set(usernames.result || []);
     });
