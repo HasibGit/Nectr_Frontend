@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  baseUrl: '',
+  baseUrl: 'https://nectr-backend.onrender.com',
   userLocalStorageKey: 'NectR_User',
-  hubsUrl: 'hubs/',
+  hubsUrl: 'https://nectr-backend.onrender.com/hubs/',
 };
